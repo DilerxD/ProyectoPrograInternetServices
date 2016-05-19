@@ -1,0 +1,126 @@
+package services.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.servlet.ServletException;
+
+import services.beans.Curso;
+
+
+public class CursosDao {
+	public List<Curso> listaCursos() throws ServletException{
+		ConexionDAO conexionDao = new ConexionDAO();
+		Connection conn = conexionDao.conectarse();
+		
+		try {
+			Statement stmt = conn.createStatement();							
+			ResultSet rs = stmt.executeQuery("SELECT * FROM cursos");
+			List<Curso> listaCursos = new LinkedList<>();
+			while(rs.next()){
+				listaCursos.add(new Curso(
+						rs.getInt(1),
+						rs.getString(2),
+						rs.getInt(3),
+						rs.getInt(4)));
+			}
+			conexionDao.desconectarse(conn);
+			return listaCursos;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			conexionDao.desconectarse(conn);
+			throw new ServletException("Error SQL: " + e.getMessage());
+		}
+	}
+	
+	public Curso obtenerCurso(int id) throws ServletException{
+		ConexionDAO conexionDao = new ConexionDAO();
+		Connection conn = conexionDao.conectarse();
+		try {
+			PreparedStatement ps = conn.prepareStatement(
+					"SELECT * FROM cursos WHERE id=?");
+			ps.setInt(1, id);
+			
+			ResultSet rs = ps.executeQuery();
+
+			if(rs.next()){
+				Curso curso = new Curso(
+						rs.getInt(1),
+						rs.getString(2),
+						rs.getInt(3),
+						rs.getInt(4));
+				conexionDao.desconectarse(conn);
+				return curso;
+			}
+			
+			return null;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			conexionDao.desconectarse(conn);
+			throw new ServletException("Error SQL: " + e.getMessage());
+		}
+	}
+	
+	public void registrarCurso(Curso curso) throws ServletException{
+		ConexionDAO conexionDao = new ConexionDAO();
+		Connection conn = conexionDao.conectarse();
+		try {
+			PreparedStatement ps = conn.prepareStatement(
+					"INSERT INTO cursos (nombre, codigo, id_escuela) VALUES (?, ?, ?)");
+			ps.setString(1, curso.getNombre());
+			ps.setInt(2, curso.getCodigo());
+			ps.setInt(3,curso.getId_escuela());
+			ps.executeUpdate();
+
+			conexionDao.desconectarse(conn);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			conexionDao.desconectarse(conn);
+			throw new ServletException("Error SQL: " + e.getMessage());
+		}
+	}
+	
+	public void modificarCurso(Curso curso) throws ServletException{
+		ConexionDAO conexionDao = new ConexionDAO();
+		Connection conn = conexionDao.conectarse();
+		try {
+			PreparedStatement ps = conn.prepareStatement(
+					"UPDATE cursos set nombre=?, codigo=?, id_escuela=? WHERE id=?");
+			ps.setString(1, curso.getNombre());
+			ps.setInt(2, curso.getCodigo());
+			ps.setInt(3, curso.getId_escuela());
+			ps.setInt(4, curso.getId());
+			ps.executeUpdate();
+
+			conexionDao.desconectarse(conn);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			conexionDao.desconectarse(conn);
+			throw new ServletException("Error SQL: " + e.getMessage());
+		}
+	}
+	
+	public void eliminarCurso(int id) throws ServletException{
+		ConexionDAO conexionDao = new ConexionDAO();
+		Connection conn = conexionDao.conectarse();
+		try {
+			PreparedStatement ps = conn.prepareStatement(
+					"DELETE FROM cursos WHERE id=?");
+			
+			ps.setInt(1, id);
+			
+			ps.executeUpdate();
+
+			conexionDao.desconectarse(conn);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			conexionDao.desconectarse(conn);
+			throw new ServletException("Error SQL: " + e.getMessage());
+		}
+	}
+}
