@@ -24,7 +24,7 @@ public class CursosService {
 	@GET
 	@Consumes("text/plain; charset=utf-8")
 	@Produces("application/json; charset=utf-8")
-	public Curso verCurso(@QueryParam("id") int id) {
+	public CursoResponse verCurso(@QueryParam("id") int id) {
 		try {
 			return new CursosDao().obtenerCurso(id);
 		} catch (ServletException e) {

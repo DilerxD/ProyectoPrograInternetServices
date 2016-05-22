@@ -22,9 +22,9 @@ public class CursosDao {
 		try {
 			Statement stmt = conn.createStatement();							
 			ResultSet rs = stmt.executeQuery("SELECT * FROM cursos");
-			List<CursoResponse> listaCursos = new LinkedList<>();
-			int contador=0;
+			List<CursoResponse> listaCursos = new LinkedList<>();			
 			while(rs.next()){
+				int contador=0;
 				PreparedStatement ps=conn.prepareStatement("select * from secciones where id_curso=?");
 				ps.setInt(1, rs.getInt(1));
 				ResultSet rs2=ps.executeQuery();
@@ -54,7 +54,7 @@ public class CursosDao {
 		}
 	}
 	
-	public Curso obtenerCurso(int id) throws ServletException{
+	public CursoResponse obtenerCurso(int id) throws ServletException{
 		ConexionDAO conexionDao = new ConexionDAO();
 		Connection conn = conexionDao.conectarse();
 		try {
@@ -65,15 +65,21 @@ public class CursosDao {
 			ResultSet rs = ps.executeQuery();
 
 			if(rs.next()){
-				Curso curso = new Curso(
-						rs.getInt(1),
-						rs.getString(2),
-						rs.getInt(3),
-						rs.getInt(4));
-				conexionDao.desconectarse(conn);
-				return curso;
+				PreparedStatement ps2=conn.prepareStatement("select * from escuelas where id=?");
+				ps2.setInt(1, rs.getInt(4));
+				ResultSet rs2=ps2.executeQuery();
+				if(rs2.next()){
+					CursoResponse curso = new CursoResponse(
+							rs.getInt(1),
+							rs.getString(2),
+							rs.getInt(3),
+							rs.getInt(4),
+							rs2.getString(2),
+							0);
+					return curso;
+				}				
 			}
-			
+			conexionDao.desconectarse(conn);
 			return null;
 		} catch (SQLException e) {
 			e.printStackTrace();
