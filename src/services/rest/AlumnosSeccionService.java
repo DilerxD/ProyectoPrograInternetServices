@@ -5,7 +5,7 @@ import java.util.Map;
 import javax.servlet.ServletException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -19,7 +19,7 @@ public class AlumnosSeccionService{
 	@GET
 	@Consumes("text/plain; charset=utf-8")
 	@Produces("application/json; charset=utf-8")
-	public Map<Integer, Boolean> mapaMostrarPertenece(
+	public Map<Integer, Integer> mapaMostrarPertenece(
 			@QueryParam("id_seccion") int id_seccion){
 		try {
 			return new AlumnosSeccionDao().mapaMostrarPertenece(id_seccion);
@@ -31,7 +31,7 @@ public class AlumnosSeccionService{
 	}	
 	
 	
-	@PUT
+	@POST
 	@Consumes("application/json; charset=utf-8")
 	@Produces("text/plain; charset=utf-8")
 	public String modificarAlumnosSeccion(RequestAlumnosSeccion requestAs){

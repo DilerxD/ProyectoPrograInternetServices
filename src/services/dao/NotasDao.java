@@ -11,17 +11,13 @@ import java.util.Map.Entry;
 
 import javax.servlet.ServletException;
 
-
-
-
-
 public class NotasDao {
 	public Map<Integer, Integer> mapaMostrarNotasAlumnosSeccion(int id_seccion) throws ServletException{
 		ConexionDAO conexionDao = new ConexionDAO();
 		Connection conn = conexionDao.conectarse();
 		String sql1= "select * from alumnos_secciones where id_seccion=?";
 		String sql2= "SELECT * FROM notas where id_alumno_seccion=?";
-		Map<Integer, Boolean> mapaMostrarPertenece=new AlumnosSeccionDao().mapaMostrarPertenece(id_seccion);
+		Map<Integer, Integer> mapaMostrarPertenece=new AlumnosSeccionDao().mapaMostrarPertenece(id_seccion);
 		try {
 			Map<Integer, Integer> mapaNotasAlumnosSeccion= new LinkedHashMap<>();
 			PreparedStatement ps=conn.prepareStatement(sql1);
@@ -32,7 +28,7 @@ public class NotasDao {
 				ps.setInt(1, rs1.getInt(1));
 				ResultSet rs2=ps.executeQuery();
 				while(rs2.next()){
-					if(mapaMostrarPertenece.get(rs1.getInt(2))==true){
+					if(mapaMostrarPertenece.get(rs1.getInt(2))==1){
 						mapaNotasAlumnosSeccion.put(rs1.getInt(2), rs2.getInt(3));
 					}				
 				}

@@ -14,19 +14,19 @@ import javax.servlet.ServletException;
 
 
 public class AlumnosSeccionDao {
-	public Map<Integer, Boolean> mapaMostrarPertenece(int id_seccion) throws ServletException{
+	public Map<Integer, Integer> mapaMostrarPertenece(int id_seccion) throws ServletException{
 		ConexionDAO conexionDao = new ConexionDAO();
 		Connection conn = conexionDao.conectarse();
 		
 		try {
 			Statement stmt = conn.createStatement();							
 			ResultSet rs = stmt.executeQuery("SELECT * FROM alumnos_secciones");
-			Map<Integer, Boolean> mapaMostrarPertenece= new LinkedHashMap<>();
+			Map<Integer, Integer> mapaMostrarPertenece= new LinkedHashMap<>();
 			while(rs.next()){
 				if(id_seccion==rs.getInt(3)){
-					mapaMostrarPertenece.put(rs.getInt(2), true);
+					mapaMostrarPertenece.put(rs.getInt(2), 1);
 				}else{
-					mapaMostrarPertenece.put(rs.getInt(2), false);
+					mapaMostrarPertenece.put(rs.getInt(2), 0);
 				}				
 			}
 			conexionDao.desconectarse(conn);
@@ -37,7 +37,7 @@ public class AlumnosSeccionDao {
 			throw new ServletException("Error SQL: " + e.getMessage());
 		}
 	}
-	public void modficarAlumnosSeccion(Map<Integer,Boolean> mapaPertenece, int id_seccion) throws ServletException{
+	public void modficarAlumnosSeccion(Map<Integer,Integer> mapaPertenece, int id_seccion) throws ServletException{
 		ConexionDAO conexionDao = new ConexionDAO();
 		Connection conn = conexionDao.conectarse();
 		String sql1="Select * from alumnos_secciones where id_alumno=? and id_seccion=?";
@@ -46,8 +46,8 @@ public class AlumnosSeccionDao {
 		try {			
 			PreparedStatement ps = null;		
 			
-			for(Entry<Integer,Boolean> mapita : mapaPertenece.entrySet()){
-				if(mapita.getValue()==true){
+			for(Entry<Integer,Integer> mapita : mapaPertenece.entrySet()){
+				if(mapita.getValue()==1){
 					ps = conn.prepareStatement(sql1);
 					ps.setInt(1, mapita.getKey());
 					ps.setInt(2, id_seccion);
@@ -60,7 +60,7 @@ public class AlumnosSeccionDao {
 						ps.executeUpdate();
 					}					
 					
-				}else if(mapita.getValue()==false){
+				}else if(mapita.getValue()==0){
 					ps = conn.prepareStatement(sql3);
 					ps.setInt(1, mapita.getKey());					
 					ps.executeUpdate();	
