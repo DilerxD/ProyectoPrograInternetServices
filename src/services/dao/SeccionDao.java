@@ -21,33 +21,41 @@ public class SeccionDao {
 		try {
 			Statement stmt = conn.createStatement();							
 			ResultSet rs = stmt.executeQuery("SELECT * FROM secciones");
-			List<SeccionResponse> listaSecciones = new LinkedList<>();
-			int contador=0;
+			List<SeccionResponse> listaSecciones = new LinkedList<>();			
 			while(rs.next()){
+				int contador=0;
 				PreparedStatement ps=conn.prepareStatement("select * from alumnos_secciones where id_seccion=?");
 				ps.setInt(1, rs.getInt(1));
 				ResultSet rs2=ps.executeQuery();
 				while(rs2.next()){
 					contador++;
 				}
-				PreparedStatement ps2=conn.prepareStatement("select * from cursos where id=?");
-				ps2.setInt(1, rs.getInt(3));
-				ResultSet rs3=ps2.executeQuery();
-				if(rs3.next()){
-					PreparedStatement ps3=conn.prepareStatement("select * from escuelas where id=?");
-					ps3.setInt(1, rs3.getInt(4));
-					ResultSet rs4=ps3.executeQuery();
-					if(rs4.next()){
-						listaSecciones.add(new SeccionResponse(
-								rs.getInt(1),
-								rs.getInt(2),
-								rs.getInt(3),
-								rs.getInt(4),
-								rs3.getString(2),								
-								rs4.getString(2),
-								contador));
+				PreparedStatement ps4=conn.prepareStatement("select * from profesores where id=?");
+				ps4.setInt(1, rs.getInt(4));
+				ResultSet rs5=ps4.executeQuery();
+				if(rs5.next()){
+					PreparedStatement ps2=conn.prepareStatement("select * from cursos where id=?");
+					ps2.setInt(1, rs.getInt(3));
+					ResultSet rs3=ps2.executeQuery();
+					if(rs3.next()){
+						PreparedStatement ps3=conn.prepareStatement("select * from escuelas where id=?");
+						ps3.setInt(1, rs3.getInt(4));
+						ResultSet rs4=ps3.executeQuery();
+						if(rs4.next()){
+							listaSecciones.add(new SeccionResponse(
+									rs.getInt(1),
+									rs.getInt(2),
+									rs.getInt(3),
+									rs.getInt(4),
+									rs3.getString(2),								
+									rs4.getString(2),
+									contador,
+									rs5.getString(2) + " "+rs5.getString(3)+ " "+rs5.getString(4)));
+						}
 					}
 				}
+				
+				
 				
 			}
 			conexionDao.desconectarse(conn);
@@ -59,7 +67,7 @@ public class SeccionDao {
 		}
 	}
 	
-	public Seccion obtenerSeccion(int id) throws ServletException{
+	public SeccionResponse obtenerSeccion(int id) throws ServletException{
 		ConexionDAO conexionDao = new ConexionDAO();
 		Connection conn = conexionDao.conectarse();
 		try {
@@ -70,13 +78,28 @@ public class SeccionDao {
 			ResultSet rs = ps.executeQuery();
 
 			if(rs.next()){
-				Seccion seccion = new Seccion(
-						rs.getInt(1),
-						rs.getInt(2),
-						rs.getInt(3),
-						rs.getInt(4));
-				conexionDao.desconectarse(conn);
-				return seccion;
+				PreparedStatement ps4=conn.prepareStatement("select * from profesores where id=?");
+				ps4.setInt(1, rs.getInt(4));
+				ResultSet rs5=ps4.executeQuery();
+				if(rs5.next()){
+					PreparedStatement ps2=conn.prepareStatement("select * from cursos where id=?");
+					ps2.setInt(1, rs.getInt(3));
+					ResultSet rs3=ps2.executeQuery();
+					if(rs3.next()){
+						SeccionResponse seccion = new SeccionResponse(
+								rs.getInt(1),
+								rs.getInt(2),
+								rs.getInt(3),
+								rs.getInt(4),
+								rs3.getString(2),								
+								"",
+								0,
+								rs5.getString(2) + " "+rs5.getString(3)+ " "+rs5.getString(4));
+						conexionDao.desconectarse(conn);
+						return seccion;
+					}
+				}
+				
 			}
 			
 			return null;

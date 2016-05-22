@@ -8,12 +8,13 @@ public class SeccionResponse {
 	private String curso;
 	private String escuela;
 	private int cantidadAlumnos;
+	private String profesor;
 	public SeccionResponse() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	public SeccionResponse(int id, int codigo, int id_curso, int id_profesor, String curso, String escuela,
-			int cantidadAlumnos) {
+			int cantidadAlumnos, String profesor) {
 		super();
 		this.id = id;
 		this.codigo = codigo;
@@ -22,6 +23,7 @@ public class SeccionResponse {
 		this.curso = curso;
 		this.escuela = escuela;
 		this.cantidadAlumnos = cantidadAlumnos;
+		this.profesor = profesor;
 	}
 	public int getId() {
 		return id;
@@ -65,7 +67,12 @@ public class SeccionResponse {
 	public void setCantidadAlumnos(int cantidadAlumnos) {
 		this.cantidadAlumnos = cantidadAlumnos;
 	}
-
+	public String getProfesor() {
+		return profesor;
+	}
+	public void setProfesor(String profesor) {
+		this.profesor = profesor;
+	}
 	
 	
 	

@@ -21,7 +21,7 @@ public class SeccionesService {
 	@GET
 	@Consumes("text/plain; charset=utf-8")
 	@Produces("application/json; charset=utf-8")
-	public Seccion verSeccion(
+	public SeccionResponse verSeccion(
 			@QueryParam("id") int id){
 		try {
 			return new SeccionDao().obtenerSeccion(id);
