@@ -39,6 +39,7 @@ public class CursosDao {
 							rs.getInt(1),
 							rs.getString(2),
 							rs.getInt(3),
+							rs.getInt(4),
 							rs3.getString(2),
 							contador));
 				}

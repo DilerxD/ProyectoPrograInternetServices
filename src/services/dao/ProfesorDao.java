@@ -35,6 +35,7 @@ public class ProfesorDao {
 							rs.getString(4),
 							rs.getString(5),
 							rs.getString(6),
+							rs.getInt(7),
 							rs2.getString(2)));
 				}				
 			}
@@ -69,6 +70,7 @@ public class ProfesorDao {
 							rs.getString(4),
 							rs.getString(5),
 							rs.getString(6),
+							rs.getInt(7),
 							rs2.getString(2));
 					conexionDao.desconectarse(conn);
 					return profesor;

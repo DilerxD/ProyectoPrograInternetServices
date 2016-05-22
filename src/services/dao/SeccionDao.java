@@ -41,8 +41,9 @@ public class SeccionDao {
 						listaSecciones.add(new SeccionResponse(
 								rs.getInt(1),
 								rs.getInt(2),
-								rs3.getString(2),
+								rs.getInt(3),
 								rs.getInt(4),
+								rs3.getString(2),								
 								rs4.getString(2),
 								contador));
 					}

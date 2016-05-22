@@ -7,9 +7,10 @@ public class ProfesorResponse {
 	private String apellido_materno;
 	private String dni;
 	private String foto_url;
+	private int id_estudio;
 	private String estudio;
 	public ProfesorResponse(int id, String nombres, String apellido_paterno, String apellido_materno, String dni,
-			String foto_url, String estudio) {
+			String foto_url, int id_estudio, String estudio) {
 		super();
 		this.id = id;
 		this.nombres = nombres;
@@ -17,6 +18,7 @@ public class ProfesorResponse {
 		this.apellido_materno = apellido_materno;
 		this.dni = dni;
 		this.foto_url = foto_url;
+		this.id_estudio = id_estudio;
 		this.estudio = estudio;
 	}
 	public ProfesorResponse() {
@@ -59,12 +61,16 @@ public class ProfesorResponse {
 	public void setFoto_url(String foto_url) {
 		this.foto_url = foto_url;
 	}
+	public int getId_estudio() {
+		return id_estudio;
+	}
+	public void setId_estudio(int id_estudio) {
+		this.id_estudio = id_estudio;
+	}
 	public String getEstudio() {
 		return estudio;
 	}
 	public void setEstudio(String estudio) {
 		this.estudio = estudio;
 	}
-	
-	
-}
+}	
