@@ -153,13 +153,15 @@ public class SeccionDao {
 		ConexionDAO conexionDao = new ConexionDAO();
 		Connection conn = conexionDao.conectarse();
 		try {
-			PreparedStatement ps = conn.prepareStatement(
+			PreparedStatement ps1 = conn.prepareStatement(
+					"DELETE FROM alumnos_secciones WHERE id_seccion=?");
+			ps1.setInt(1, id);
+			ps1.executeUpdate();
+			PreparedStatement ps2 = conn.prepareStatement(
 					"DELETE FROM secciones WHERE id=?");
+			ps2.setInt(1, id);
+			ps2.executeUpdate();
 			
-			ps.setInt(1, id);
-			
-			ps.executeUpdate();
-
 			conexionDao.desconectarse(conn);
 		} catch (SQLException e) {
 			e.printStackTrace();

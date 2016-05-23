@@ -1,5 +1,6 @@
 package services.rest;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -10,6 +11,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
+import services.beans.AlumnoSeccion;
 import services.dao.AlumnosSeccionDao;
 import services.requestrespondes.RequestAlumnosSeccion;
 
@@ -29,7 +31,20 @@ public class AlumnosSeccionService{
 			return null;
 		}
 	}	
-	
+	@Path("/lista")
+	@GET
+	@Consumes("text/plain; charset=utf-8")
+	@Produces("application/json; charset=utf-8")
+	public List<AlumnoSeccion> lista(
+			@QueryParam("id_seccion") int id_seccion){
+		try {
+			return new AlumnosSeccionDao().listaAlumnoSeccion(id_seccion);
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
 	@POST
 	@Consumes("application/json; charset=utf-8")

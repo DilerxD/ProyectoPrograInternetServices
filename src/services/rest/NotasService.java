@@ -5,7 +5,7 @@ import java.util.Map;
 import javax.servlet.ServletException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -29,7 +29,7 @@ public class NotasService{
 		}
 	}
 	
-	@PUT
+	@POST
 	@Consumes("application/json; charset=utf-8")
 	@Produces("text/plain; charset=utf-8")
 	public String modificarNotas(Map<Integer, Integer> notas){
