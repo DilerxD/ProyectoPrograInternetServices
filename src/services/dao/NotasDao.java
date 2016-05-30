@@ -29,7 +29,7 @@ public class NotasDao {
 				ResultSet rs2=ps.executeQuery();
 				while(rs2.next()){
 					if(mapaMostrarPertenece.get(rs1.getInt(2))==1){
-						mapaNotasAlumnosSeccion.put(rs1.getInt(2), rs2.getInt(3));
+						mapaNotasAlumnosSeccion.put(rs1.getInt(1), rs2.getInt(3));
 					}				
 				}
 			}			
